@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from 'styled-components'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { getData } from './../../redux/widgetSlice';
 
 const FormWrapper = styled.form`
   margin: 0 auto;
@@ -39,6 +42,9 @@ const Search = styled.button`
     outline: 1px solid ${props=>props.theme.outlineColor};
     transition:.2s ease;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     &:hover{
         background:${props=>props.theme.outlineColor};
         opacity:.8;
@@ -46,11 +52,24 @@ const Search = styled.button`
 `
 
 const Form = ({ handleClick }) => {
-  const { register, handleSubmit } = useForm();
+
+  const { register, handleSubmit,reset } = useForm({
+    defaultValues:{
+      city:''
+    }
+  });
   const theme = useTheme()
+  const dispatch = useDispatch()
+
+
+
+  const handleSearch = (value) =>{
+    dispatch(getData(value.city))
+    reset()
+  }
 
   return (
-    <FormWrapper onSubmit={handleSubmit(handleClick)}>
+    <FormWrapper onSubmit={handleSubmit(handleSearch)}>
       <Input
         theme={theme.default}
         {...register("city", { required: true, maxLength: 25 })}
