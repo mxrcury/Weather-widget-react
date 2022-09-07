@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { Button, TextField } from "@mui/material";
+import Container from "@mui/material/Container";
+import styled from "styled-components";
+import { useForm } from 'react-hook-form'
+import Form from "./components/Form/Form";
+import Widget from './components/Widget/Widget';
 
-function App() {
+
+
+
+const App = () => {
+
+  const {register} = useForm()
+
+  const handleSearch = (value) =>{
+    console.log(value)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="sm" fixed>
+      <Form handleClick={handleSearch} />
+      <Widget/>
+    </Container>
   );
-}
+};
 
 export default App;
