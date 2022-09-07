@@ -3,7 +3,7 @@ import {getDataReq, getDataByDefaultReq} from './../components/api/apiRequests';
 
 const initialState ={
     weatherData:{
-        cityName:'dasd',
+        cityName:null,
         weather:{
             name:null
         },
@@ -23,7 +23,7 @@ const widgetSlice = createSlice({
         setCurrentDayData(state,action){
             const { name,weather,main,wind,sys } = action.payload
             state.weatherData.cityName = name
-            state.weatherData.weather.name = weather.main
+            state.weatherData.weather.name = weather[0].main
             state.weatherData.temp = Math.round(main.temp)
             state.weatherData.tempFeelsLike = Math.round(main.feels_like)
             state.weatherData.countryIndex = sys.country
