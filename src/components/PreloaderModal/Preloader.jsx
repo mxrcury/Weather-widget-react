@@ -1,5 +1,5 @@
 import styles from './Preloader.module.css'
-import Loader from './../images/Loader.gif'
+import Loader from '../../images/Loader.gif'
 
 const Preloader = () => {
   return (

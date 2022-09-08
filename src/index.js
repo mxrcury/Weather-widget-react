@@ -14,11 +14,16 @@ const theme = {
     darkColor: "#373A36",
     uniqueColor: "#D48166",
     outlineColor: "rgba(140, 140, 140, 0.6)",
+    outlineColorHover:'rgba(80, 80, 80, 1)',
+    placeholder:'#373A36'
   },
   dark: {
-    background: "",
-    color: "",
+    background: "#4a4a4a",
+    color: "white",
     secondColor: "",
+    outlineColor:'white',
+    outlineColorHover:'rgba(250, 250, 250, 1)',
+    placeholder:'white'
   },
   light: {
     background: "",

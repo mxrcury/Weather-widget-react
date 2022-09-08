@@ -3,29 +3,24 @@ import styled from "styled-components";
 import { useTheme } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getDataByDefault } from "./../../redux/widgetSlice";
+import { getDataByDefault } from "../../redux/widgetSlice";
 import Preloader from "../PreloaderModal/Preloader";
 import CloudIcon from "@mui/icons-material/Cloud";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import { Switch } from "react-switch-input";
-import { useForm } from "react-hook-form";
 
 const Wrapper = styled.div`
   width: 80%;
   margin: 0 auto;
   background: ${(props) => props.theme.darkBackground};
   border-radius: 12px;
-  height:100%;
+  height: 100%;
   padding: 10px 20px 10px;
   color: ${(props) => props.theme.color};
-  position:relative;
+  position: relative;
+  border:1px solid ${props=>props.theme.color}
 `;
 const Title = styled.h1`
   font-size: 26px;
-`;
-const SwitchButton = styled.input`
-  display: flex;
-  margin: 0 auto;
 `;
 const GridContainer = styled.div`
   display: grid;
@@ -60,36 +55,35 @@ const Card = styled.div`
   background: ${(props) => props.theme.uniqueColor};
 `;
 const Modal = styled.div`
-  width:60px;
-  height:16px;
-  background:green;
-  visibility:hidden;
-  opacity:1;
-  display:none;
-  position:absolute;
-  transition:.2s ease;
-`
+  width: 60px;
+  height: 16px;
+  background: green;
+  visibility: hidden;
+  opacity: 1;
+  display: none;
+  position: absolute;
+  transition: 0.2s ease;
+`;
 const IconButton = styled.button`
-transition:.2s ease;
-border-radius:7px;
-transform:translateX(-4px);
-position:absolute;
-width:2px;
-height:10px;
-  &:hover{
-    transform:translateX(-16px);
-    width:20px;
-    border-radius:10px;
-    height:20px;
+  transition: 0.2s ease;
+  border-radius: 7px;
+  transform: translateX(-4px);
+  position: absolute;
+  width: 2px;
+  height: 10px;
+  &:hover {
+    transform: translateX(-16px);
+    width: 20px;
+    border-radius: 10px;
+    height: 20px;
   }
-`
+`;
 
-const Widget = () => {
+const Widget = ({ darkTheme }) => {
   const theme = useTheme();
-  const { register, watch } = useForm();
   const dispatch = useDispatch();
   const [currentTime, setCurrentTime] = useState(null);
-  const [isModalOpen,setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getDataByDefault());
@@ -107,21 +101,41 @@ const Widget = () => {
       {weatherData.weather.name === null ? (
         <Preloader />
       ) : (
-        <Wrapper theme={theme.default}>
+        <Wrapper theme={darkTheme ? theme.default : theme.dark}>
           <GridContainer>
             <Grid>
-              <Title>{weatherData.cityName}</Title>
+              <Title>{`${weatherData.cityName}, ${weatherData.countryIndex}`}</Title>
               <Subtitle>{currentTime}</Subtitle>
               <Cards>
                 {othersDay.map((el) => (
-                  <div style={{display:'flex',alignItems:'center',  marginTop:'10px'}} >
-                  {isModalOpen && <Modal style={{
-                    display:'block',
-                    visibility:'visible',
-                    transform:'translateX(-90px)'}} >
-                   <input type="text" style={{width:'60%'}} />
-                  </Modal>}
-                  <IconButton onClick={()=>setIsModalOpen(!isModalOpen)}  style={{background:theme.default.uniqueColor,outline:'0',border:0,marginRight:'5px',cursor:'pointer'}}></IconButton>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {isModalOpen && (
+                      <Modal
+                        style={{
+                          display: "block",
+                          visibility: "visible",
+                          transform: "translateX(-90px)",
+                        }}
+                      >
+                        <input type="text" style={{ width: "60%" }} />
+                      </Modal>
+                    )}
+                    <IconButton
+                      onClick={() => setIsModalOpen(!isModalOpen)}
+                      style={{
+                        background: theme.default.uniqueColor,
+                        outline: "0",
+                        border: 0,
+                        marginRight: "5px",
+                        cursor: "pointer",
+                      }}
+                    ></IconButton>
                     <Card theme={theme.default}>
                       <span>{el.name}</span>
                       <span>
@@ -184,21 +198,35 @@ const Widget = () => {
                   />
                 </Icon>
               )}
-
               <div
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  marginRight: "10px",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginBottom: "5px",
                 }}
               >
-                <Switch
-                  theme={"two"}
+                <input
+                  type="checkbox"
+                  className='checkbox'
+                  checked={!isCelcium}
                   style={{ width: "120px" }}
-                  onChange={() => setIsCelcium(!isCelcium)}
+                  onChange={() => {
+                    setIsCelcium(!isCelcium);
+                  }}
                 />
+                <p
+                  style={{
+                    fontSize: "13px",
+                    textAlign: "center",
+                    marginTop: "5px",
+                  }}
+                >
+                  Celcium - Fahrenheit
+                </p>
               </div>
-              <h1 style={{ fontSize: "34px" }}>
+              <h1 style={{ fontSize: "34px", textAlign: "center" }}>
                 {isCelcium
                   ? `${String(Math.round(weatherData.temp)).slice(
                       0,
@@ -212,7 +240,7 @@ const Widget = () => {
                       3
                     )} °F`}
               </h1>
-              <h2 style={{ fontSize: "16px" }}>
+              <h2 style={{ fontSize: "16px", textAlign: "center" }}>
                 Feels like:{" "}
                 {isCelcium
                   ? `${String(Math.round(weatherData.tempFeelsLike)).slice(

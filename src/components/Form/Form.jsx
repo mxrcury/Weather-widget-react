@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTheme } from 'styled-components'
-import { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { getData } from './../../redux/widgetSlice';
 
@@ -26,10 +25,13 @@ const Input = styled.input`
   word-spacing: normal;
   text-rendering: auto;
   border: 0;
-  color:${props=>props.theme.darkColor};
+  color:${props=>props.theme.outlineColor};
   padding: 0 5px;
+  &::placeholder{
+    color:${props=>props.theme.placeholder}
+  }
   &:hover {
-    outline: 1px solid rgba(80, 80, 80, 1);
+    outline: 1px solid ${props=>props.theme.outlineColorHover};
   }
 `;
 const Search = styled.button`
@@ -51,7 +53,7 @@ const Search = styled.button`
     }
 `
 
-const Form = ({ handleClick }) => {
+const Form = ({ darkTheme }) => {
 
   const { register, handleSubmit,reset } = useForm({
     defaultValues:{
@@ -71,12 +73,12 @@ const Form = ({ handleClick }) => {
   return (
     <FormWrapper onSubmit={handleSubmit(handleSearch)}>
       <Input
-        theme={theme.default}
+        theme={darkTheme ? theme.default : theme.dark}
         {...register("city", { required: true, maxLength: 25 })}
         placeholder="Enter a city"
       />
-      <Search theme={theme.default} >
-        <SearchIcon color="black" />
+      <Search theme={darkTheme ? theme.default : theme.dark} >
+        <SearchIcon htmlColor={darkTheme ? 'black' : "white"} />
       </Search>
     </FormWrapper>
   );

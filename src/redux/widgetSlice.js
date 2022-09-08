@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {getDataReq, getDataByDefaultReq} from './../components/api/apiRequests';
+import {getDataReq, getDataByDefaultReq} from '../api/apiRequests';
 
 const initialState ={
     weatherData:{
